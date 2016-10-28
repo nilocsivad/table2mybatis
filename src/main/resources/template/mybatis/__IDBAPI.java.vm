@@ -1,0 +1,124 @@
+/**
+ * 
+ */
+package ${package_database};
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import ${package_ref}.PageParam;
+
+/**
+ * @author Colin
+ */
+public interface __IDBAPI<T> {
+
+	int insert(T one);
+
+	int inserts(List<T> list);
+
+	int deleteByKey(Object primaryKey);
+
+	/**
+	 * 删除多个 String = ${String}
+	 */
+	int deleteEq(T param);
+
+	int updateByKey(Object primaryKey, T param);
+
+	/**
+	 * 查询数目 String LIKE CONCAT( '%', '${String}', '%' )
+	 */
+	long queryCount(T param);
+
+	/**
+	 * 查询数目 String = ${String}
+	 */
+	long queryCountEq(T param);
+
+	/**
+	 * 查询单个
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	T queryByKey(@Param(value = "columns") String columns, @Param(value = "primaryKey") Object primaryKey);
+
+	/**
+	 * 查询单个 String = ${String}
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	T queryEq(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 查询多个 String LIKE CONCAT( '%', '${String}', '%' )
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryMulti(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 查询多个 String = ${String}
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryMultiEq(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 查询多个 String LIKE CONCAT( '%', '${String}', '%' )
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryMulti10(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 查询多个 String = ${String}
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryMultiEq10(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 查询多个 String LIKE CONCAT( '%', '${String}', '%' )
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryMulti20(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 查询多个 String = ${String}
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryMultiEq20(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 查询多个 String LIKE CONCAT( '%', '${String}', '%' )
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryMulti50(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 查询多个 String = ${String}
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryMultiEq50(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 查询多个 String LIKE CONCAT( '%', '${String}', '%' )
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryMulti100(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 查询多个 String = ${String}
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryMultiEq100(@Param(value = "columns") String columns, T param);
+
+	/**
+	 * 分页查询 String LIKE CONCAT( '%', '${String}', '%' )
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryLimit(@Param(value = "columns") String columns, PageParam page, T param);
+
+	/**
+	 * 分页查询 String = ${String}
+	 * @param columns 要查询的列,无特殊指定请传 *
+	 */
+	List<T> queryLimitEq(String columns, PageParam page, T param);
+
+}

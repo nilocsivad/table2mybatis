@@ -1,0 +1,24 @@
+/**
+ * 
+ */
+package ${package_ref};
+
+import java.io.Serializable;
+
+/**
+ * @author Colin
+ */
+public class PageParam implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	public PageParam() {
+	}
+
+}

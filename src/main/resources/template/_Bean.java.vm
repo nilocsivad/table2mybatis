@@ -1,0 +1,149 @@
+/**
+ * 
+ */
+package ${package_model};
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+/**
+ * ${comment} <br />
+ * Database table: ${table} <br />
+ * @author Colin
+ */
+public class ${bean}Model extends __Model {
+
+#foreach( $itm in $cols )
+	/// $itm.javaType $itm.name; 		// $itm.comment $itm.type ($itm.len) nullable: $itm.canBeNull
+#end
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * All fields, like colPK,colA,colB,colC...
+	 */
+	public static final String ALL = "${all}";
+	
+	/**
+	 * Fields without PK, like colA,colB,colC...
+	 */
+	public static final String NOPK = "${noPK}";
+
+
+#foreach( $itm in $cols )
+	/**
+	 * $itm.comment <br />
+	 * $itm.type ($itm.len) <br />
+	 * $itm.javaType <br />
+	 * nullable: $itm.canBeNull
+	 */
+	public static final String KEY_$itm.ConstName = "$itm.name";
+#if( $itm.javaType == "String" )
+	/**
+	 * length of $itm.comment
+	 */
+	public static final int LEN_${itm.ConstName} = $itm.len;
+#end
+	
+#end
+
+
+	/**
+	 * 
+	 */
+	public ${bean}Model() {
+	}
+
+#foreach( $itm in $cols )
+	/**
+	 * $itm.comment <br />
+	 * $itm.type ($itm.len) <br />
+	 * $itm.javaType <br />
+	 * nullable: $itm.canBeNull
+	 */
+	private $itm.javaType $itm.name; 
+#end
+	
+	
+
+	private static String getMethodName(String name) {
+		return (name.charAt(0) + "").toUpperCase() + name.substring(1);
+	}
+
+	public static ${bean}Model Make(String cols, Object... vals) {
+		return Make(cols.split(","), vals);
+	}
+	
+	public static ${bean}Model Make(String[] fields, Object... vals) {
+		${bean}Model instance = new ${bean}Model();
+		try {
+
+			Class<?> cls = instance.getClass();
+
+			for (int i = 0, l = fields.length; l > i; ++i) {
+				String field = fields[i].trim();
+				try {
+					Field fd = cls.getDeclaredField(field);
+					if (fd != null) {
+						Method method = cls.getDeclaredMethod("set" + getMethodName(field), fd.getType());
+						if (method != null) {
+							method.invoke(instance, vals[i]);
+						}
+						// fd.setAccessible(true);
+						// fd.set(instance, vals[i]);
+						// fd.setAccessible(false);
+					}
+				}
+				// catch (NoSuchFieldException e) {
+				catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return instance;
+	}
+	
+	
+	
+#foreach( $gs in $cols )
+#set( $getName = "get" + $gs.methodName )
+	/**
+	 * $gs.comment <br />
+	 * $gs.type ($gs.len) <br />
+	 * $gs.javaType <br />
+	 * nullable: $gs.canBeNull <br />
+	 * @return the $gs.name
+	 */
+	public $gs.javaType $getName() {
+		return $gs.name;
+	}
+	
+#set( $setName = "set" + $gs.methodName )
+#set( $subItem = "set" + $gs.methodName )
+	/**
+	 * $gs.comment <br />
+	 * $gs.type ($gs.len) <br />
+	 * $gs.javaType <br />
+	 * nullable: $gs.canBeNull <br />
+	 * @param $gs.name the $gs.name to set
+	 */
+	public void $setName($gs.javaType $gs.name) {
+#if( $gs.javaType == "String" )
+		if ($gs.name != null && !"".equals($gs.name) && ${gs.name}.length() > LEN_${gs.ConstName}) {
+			$gs.name = ${gs.name}.substring(0, LEN_${gs.ConstName});
+		}
+		this.$gs.name = $gs.name;
+#else
+		this.$gs.name = $gs.name;
+#end
+	}
+	
+#end
+	
+}

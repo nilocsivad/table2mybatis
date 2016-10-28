@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+package ${package_c};
+
+/**
+ * @author Colin
+ * 
+ */
+public interface IAPP {
+
+	String LINE = "\r\n";
+
+	String JSON_KEY = "sign";
+	String JSON_RESULT = "result";
+	String JSON_MSG = "message";
+
+	String DEFAULT_IMAGE_SUFFIX = "jpg";
+
+	String REQ = "${package_req}";
+	String WEB = "${package_web}";
+
+	String ONLINE_REQ = "req";
+	String ONLINE_WEB = "web";
+
+}

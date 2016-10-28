@@ -1,0 +1,280 @@
+/**
+ * 
+ */
+package ${package_api};
+
+import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
+import ${package_database}.__IDBAPI;
+import ${package_iapi}.__IAPI;
+import ${package_ref}.PageParam;
+
+/**
+ * @author Colin
+ * @param <T>
+ */
+public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
+
+	/**
+	 * 
+	 */
+	public __APIDefaultImpl() {
+	}
+
+	protected abstract __IDBAPI<T> getDBApi();
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#insert 
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public int insert(T one) {
+		try {
+			return this.getDBApi().insert(one);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+
+			if (TransactionAspectSupport.currentTransactionStatus().isNewTransaction()) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			}
+			else {
+				throw e;
+			}
+		}
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#inserts 
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public int inserts(List<T> list) {
+		try {
+			return this.getDBApi().inserts(list);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+
+			if (TransactionAspectSupport.currentTransactionStatus().isNewTransaction()) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			}
+			else {
+				throw e;
+			}
+		}
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#deleteByKey 
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public int deleteByKey(Object primaryKey) {
+		try {
+			return this.getDBApi().deleteByKey(primaryKey);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+
+			if (TransactionAspectSupport.currentTransactionStatus().isNewTransaction()) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			}
+			else {
+				throw e;
+			}
+		}
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#deleteEq 
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public int deleteEq(T param) {
+		try {
+			return this.getDBApi().deleteEq(param);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+
+			if (TransactionAspectSupport.currentTransactionStatus().isNewTransaction()) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			}
+			else {
+				throw e;
+			}
+		}
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#updateByKey 
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public int updateByKey(Object primaryKey, T param) {
+		try {
+			return this.getDBApi().updateByKey(primaryKey, param);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+
+			if (TransactionAspectSupport.currentTransactionStatus().isNewTransaction()) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			}
+			else {
+				throw e;
+			}
+		}
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryCount 
+	 */
+	@Override
+	public long queryCount(T param) {
+		return this.getDBApi().queryCount(param);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryCountEq 
+	 */
+	@Override
+	public long queryCountEq(T param) {
+		return this.getDBApi().queryCountEq(param);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryByKey 
+	 */
+	@Override
+	public T queryByKey(Object primaryKey) {
+		return this.queryByKey("*", primaryKey);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryByKey 
+	 */
+	@Override
+	public T queryByKey(String columns, Object primaryKey) {
+		return this.getDBApi().queryByKey(columns, primaryKey);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryEq 
+	 */
+	@Override
+	public T queryEq(T param) {
+		return this.getDBApi().queryEq("*", param);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryMulti 
+	 */
+	@Override
+	public List<T> queryMulti(T param) {
+		return this.getDBApi().queryMulti("*", param);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryMultiEq 
+	 */
+	@Override
+	public List<T> queryMultiEq(T param) {
+		return this.getDBApi().queryMultiEq("*", param);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryLimit
+	 */
+	@Override
+	public List<T> queryLimit(PageParam page, T param) {
+
+		long count = this.getDBApi().queryCount(param);
+		System.out.println(count + "-------------------------------------");
+
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryLimitEq
+	 */
+	@Override
+	public List<T> queryLimitEq(PageParam page, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryEq 
+	 */
+	@Override
+	public T queryEq(String columns, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryMulti 
+	 */
+	@Override
+	public List<T> queryMulti(String columns, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryMultiEq 
+	 */
+	@Override
+	public List<T> queryMultiEq(String columns, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryLimit
+	 */
+	@Override
+	public List<T> queryLimit(String columns, PageParam page, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_iapi}.__IAPI#queryLimitEq
+	 */
+	@Override
+	public List<T> queryLimitEq(String columns, PageParam page, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

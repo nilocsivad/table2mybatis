@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ${table.comment} -->
+<!-- ${package_model}.${bean}Model -->
+<mapper namespace="${package_database}.I${bean}DBApi">
+
+	<sql id="TABLE_NAME"> ${table.name} </sql>
+	<parameterMap type="${package_model}.${bean}Model" id="${bean}Model"></parameterMap>
+	<resultMap type="${package_model}.${bean}Model" id="${bean}ModelMap" autoMapping="true"></resultMap>
+
+
+
+	<insert id="insert" parameterMap="${bean}Model" #if( ${hasPrimaryKey} == true )keyProperty="${primaryKey}" keyColumn="${primaryKey}" useGeneratedKeys="true"#end>
+		INSERT INTO
+		<include refid="TABLE_NAME" />
+		( ${table.columnString} )
+		VALUES
+		( ${table.columnValueString} )
+	</insert>
+	
+	<insert id="inserts">
+		INSERT INTO
+		<include refid="TABLE_NAME" />
+		( ${table.columnString} ) VALUES
+		<foreach collection="list" item="item" separator=","> ( ${table.columnItemValueString} ) </foreach>
+	</insert>
+
+
+
+#if( ${hasPrimaryKey} == true )
+	<update id="updateByKey">
+		UPDATE
+		<include refid="TABLE_NAME" />
+		SET
+		<trim prefixOverrides=",">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+			<if test="${itm.name} != null and ${itm.name} != ''"> , ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+		</trim>
+		WHERE ${primaryKey} = #{primaryKey}
+	</update>
+#end
+
+
+
+	<select id="queryCount" resultType="java.lang.Long">
+		SELECT COUNT(*) FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+#if( $itm.javaType == "String" )
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} LIKE CONCAT( '%', '${${itm.name}}', '%' ) </if>
+#else
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+#end
+		</trim>
+	</select>
+
+	<select id="queryCountEq" resultType="java.lang.Long">
+		SELECT COUNT(*) FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+		</trim>
+	</select>
+	
+	
+	
+#if( ${hasPrimaryKey} == true )
+	<select id="queryByKey" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		WHERE ${primaryKey} = #{primaryKey}
+	</select>
+#end
+	
+	<select id="queryEq" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+		</trim>
+		LIMIT 1
+	</select>
+	
+	<select id="queryMulti" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+#if( $itm.javaType == "String" )
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} LIKE CONCAT( '%', '${${itm.name}}', '%' ) </if>
+#else
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+#end
+		</trim>
+	</select>
+	
+	<select id="queryMultiEq" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+		</trim>
+	</select>
+	
+	<select id="queryMulti10" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+#if( $itm.javaType == "String" )
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} LIKE CONCAT( '%', '${${itm.name}}', '%' ) </if>
+#else
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+#end
+		</trim>
+#if( ${hasPrimaryKey} == true )
+		ORDER BY ${primaryKey} DESC
+#end
+		LIMIT 10
+	</select>
+	
+	<select id="queryMultiEq10" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+		</trim>
+#if( ${hasPrimaryKey} == true )
+		ORDER BY ${primaryKey} DESC
+#end
+		LIMIT 10
+	</select>
+	
+	<select id="queryMulti20" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+#if( $itm.javaType == "String" )
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} LIKE CONCAT( '%', '${${itm.name}}', '%' ) </if>
+#else
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+#end
+		</trim>
+#if( ${hasPrimaryKey} == true )
+		ORDER BY ${primaryKey} DESC
+#end
+		LIMIT 20
+	</select>
+	
+	<select id="queryMultiEq20" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+		</trim>
+#if( ${hasPrimaryKey} == true )
+		ORDER BY ${primaryKey} DESC
+#end
+		LIMIT 20
+	</select>
+	
+	<select id="queryMulti50" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+#if( $itm.javaType == "String" )
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} LIKE CONCAT( '%', '${${itm.name}}', '%' ) </if>
+#else
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+#end
+		</trim>
+#if( ${hasPrimaryKey} == true )
+		ORDER BY ${primaryKey} DESC
+#end
+		LIMIT 50
+	</select>
+	
+	<select id="queryMultiEq50" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+		</trim>
+#if( ${hasPrimaryKey} == true )
+		ORDER BY ${primaryKey} DESC
+#end
+		LIMIT 50
+	</select>
+	
+	<select id="queryMulti100" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+#if( $itm.javaType == "String" )
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} LIKE CONCAT( '%', '${${itm.name}}', '%' ) </if>
+#else
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+#end
+		</trim>
+#if( ${hasPrimaryKey} == true )
+		ORDER BY ${primaryKey} DESC
+#end
+		LIMIT 100
+	</select>
+	
+	<select id="queryMultiEq100" resultMap="${bean}ModelMap">
+		SELECT ${columns} FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+			<if test="${itm.name} != null and ${itm.name} != ''"> AND ${itm.name} = #{${itm.name}} </if>
+#end
+#end
+		</trim>
+#if( ${hasPrimaryKey} == true )
+		ORDER BY ${primaryKey} DESC
+#end
+		LIMIT 100
+	</select>
+
+
+
+</mapper>

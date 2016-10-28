@@ -1,0 +1,17 @@
+/**
+ * 
+ */
+package ${package_database};
+
+import org.springframework.stereotype.Repository;
+
+import ${package_model}.${bean}Model;
+
+/**
+ * ${comment} <br />
+ * Database table: ${table} <br />
+ * @author Colin
+ */
+@Repository
+public interface I${bean}DBApi extends __IDBAPI<${bean}Model> {
+}

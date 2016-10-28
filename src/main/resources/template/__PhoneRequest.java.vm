@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package ${package_mobile};
+
+import ${package_request}.__Request;
+
+/**
+ * @author Colin
+ */
+public class __PhoneRequest extends __Request {
+
+	/**
+	 * 
+	 */
+	public __PhoneRequest() {
+	}
+
+}

@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package ${package_util};
+
+/**
+ * @author Colin
+ */
+public class DateUtil extends DTUtil {
+
+	protected DateUtil() {
+	}
+
+}

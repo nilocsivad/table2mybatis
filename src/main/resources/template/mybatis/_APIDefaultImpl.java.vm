@@ -1,0 +1,40 @@
+/**
+ * 
+ */
+package ${package_api};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ${package_database}.I${bean}DBApi;
+import ${package_database}.__IDBAPI;
+import ${package_iapi}.I${bean}Api;
+import ${package_model}.${bean}Model;
+
+/**
+ * ${comment} <br />
+ * Database table: ${table} <br />
+ * @author Colin
+ */
+@Service
+public class ${bean}ApiImpl extends __APIDefaultImpl<${bean}Model> implements I${bean}Api {
+
+	@Autowired
+	private I${bean}DBApi loginDBApi;
+
+	/**
+	 * 
+	 */
+	public ${bean}ApiImpl() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ${package_api}.__APIDefaultImpl#getDBApi()
+	 */
+	@Override
+	protected __IDBAPI<${bean}Model> getDBApi() {
+		return loginDBApi;
+	}
+
+}

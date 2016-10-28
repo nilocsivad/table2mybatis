@@ -1,0 +1,27 @@
+/**
+ * 
+ */
+package ${package_util};
+
+import java.util.regex.Pattern;
+
+/**
+ * @author Colin
+ */
+public class RegexUtil {
+
+	/**
+	 * 
+	 */
+	public RegexUtil() {
+	}
+
+	public static boolean isDouble(String txt) {
+		return txt != null && Pattern.matches("^\\d+(\\.\\d+)*$", txt);
+	}
+
+	public static boolean isNumString(String txt) {
+		return txt != null && Pattern.matches("^\\d+(,\\d+)*$", txt);
+	}
+
+}
